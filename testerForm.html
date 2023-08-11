@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        fieldset{
+            display: none;
+         }
+    </style>
+</head>
+<body>
+
+<div class="multi-part-form">
+    <div class="form-section">
+        <!--First part of form goes here-->
+        <input type="text" required class="name" placeholder="Name">
+        <input type="text" required class="email" placeholder="Email">
+        <button type="button" class="next">Next</button>
+    </div>
+
+    <div class="form-section" style="display: none;">
+        <!--Second part of form goes here-->
+        <input type="text" required class="address" placeholder="Address">
+        <button type="button" class="prev">Previous</button>
+        <button type="button" class="next">Next</button>
+    </div>
+
+    <div class="form-section" style="display: none;">
+        <!--Third part of form goes here-->
+        <input type="text" required class="phone" placeholder="Phone Number">
+        <button type="button" class="prev">Previous</button>
+        <button type="button" class="submit">Submit</button>
+    </div>
+</div>
+
+
+    
+
+
+<script>
+    var forms = document.querySelectorAll(".multi-part-form");
+
+forms.forEach(function(form) {
+    var sections = form.querySelectorAll(".form-section");
+    var currentSectionIndex = 0;
+
+    sections[currentSectionIndex].style.display = "block";
+
+    form.querySelectorAll(".next").forEach(function(button, index) {
+        button.addEventListener("click", function() {
+            if (validateSection(sections[currentSectionIndex])) {
+                sections[currentSectionIndex].style.display = "none";
+                currentSectionIndex++;
+                sections[currentSectionIndex].style.display = "block";
+            }
+        });
+    });
+
+    form.querySelectorAll(".prev").forEach(function(button, index) {
+        button.addEventListener("click", function() {
+            sections[currentSectionIndex].style.display = "none";
+            currentSectionIndex--;
+            sections[currentSectionIndex].style.display = "block";
+        });
+    });
+
+    function validateSection(section) {
+        var inputs = section.querySelectorAll("input");
+        var isValid = true;
+
+        inputs.forEach(function(input) {
+            if (!input.checkValidity()) {
+                isValid = false;
+            }
+        });
+
+        return isValid;
+    }
+});
+</script>
+</body>
+</html>

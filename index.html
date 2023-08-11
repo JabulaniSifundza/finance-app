@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima:wght@400;700&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js" integrity="sha512-uMtXmF28A2Ab/JJO2t/vYhlaa/3ahUOgj1Zf27M5rOo8/+fcTUVH0/E0ll68njmjrLqOBjXM3V9NiPFL5ywWPQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/cpexcel.js" integrity="sha512-yi8FNVU1yTsGyKcq01t6Ti5U2flfCXRvam3U00sPCRJUSMs/ZhghiJPyh25QmI5Tr3L87d+aS1Irozv4Qt631g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.core.min.js" integrity="sha512-UhlYw//T419BPq/emC5xSZzkjjreRfN3426517rfsg/XIEC02ggQBb680V0VvP+zaDZ78zqse3rqnnI5EJ6rxA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+    <link rel="stylesheet" href="/style.css">
+    <script type="module" src="/main.js"></script>
+    <title>Home Page</title>
+</head>
+<body>
+
+    <div class="page-container">
+        <div class="content-wrap">
+            <dialog id="createAccount">
+                <div>
+                    <span class="material-symbols-rounded"  id="signupModalClose">
+                        close
+                    </span>
+                </div>
+                <form>
+                    <input type="text" id="userFirstName" placeholder="Full name">
+                    <input type="email" placeholder="Email Address" id="user-email">
+                    <input type="password" placeholder="Password" id="user-password">
+                    <label for="Show Password">
+                        <input type="checkbox" name="Show Password" id="show-password">
+                        Show Password
+                    </label>
+                    <button class="addToBudget" id="create-account-btn">Sign up</button>
+                </form>
+            </dialog>
+            <dialog id="editInvestment">
+                <div id="investmentInfo">
+                    
+                </div>  
+            </dialog>
+            <div id="homeSection" class="page">
+                <h1>
+                    Your Summary
+                </h1>
+                <div class="statSummary">
+                    <h3>
+
+                    </h3>
+                    <div class="statInfo">
+                        <h2>
+                            Savings:
+                        </h2>
+                        <p></p>
+                        <h2>
+                            Expenditure: 
+                        </h2>
+                        <p></p>
+                        <h2>
+                            Investment value:
+                        </h2>
+                        <p></p>
+                    </div>
+                </div>
+
+                <div class="recent">
+                    <h2>
+                        Recent activity
+                    </h2>
+                    <div class="activityBreakdown">
+                        <div class="breakDownCard">
+                            <div class="breakDownSymbol">
+                                <span class="material-symbols-rounded">
+                                    shopping_cart
+                                </span>
+                            </div>
+                            <p>Grocery</p>
+                            <h4>$ 120.75</h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Grocery</p>
+                            <h4></h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Grocery</p>
+                            <h4></h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div id="budgetSection" class="page">
+                <h2>
+                    Create Entry
+                </h2>
+                <div class="budgetEntry">
+                   <form>
+                        <select name="amountType" id="amountType">
+                            <option value="Select Type">Select Type</option>
+                            <option value="Income">Income</option>
+                            <option value="Expenditure">Expenditure</option>
+                            <option value="Savings">Savings</option>
+                        </select>
+                        <select name="category" id="category">
+                            <option value="Select Category">Select Category</option>
+                            <option value="Salary">Salary</option>
+                            <option value="Investment Return">Investment Return</option>
+                            <option value="Loan Acquisition">Loan Acquisition</option>
+                            <option value="Loan Installment">Loan Installment</option>
+                            <option value="Grocery">Grocery</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Travel">Travel Expense</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <input type="number" placeholder="Amount" id="entryAmount">
+                        <input type="date" id="amountDate">
+                        <label for="">Expense Receipt:</label>
+                        <input type="file" id="budgetEntryReceipt" accept="image/*,application/pdf">
+                        <input type="text" placeholder="Notes" id="amountNote">
+                        <button id="createEntry" class="addToBudget">
+                            Add Entry
+                        </button>
+                    </form>
+                </div>
+                <h2>
+                    Budget Breakdown
+                </h2>
+                <div class="budgetStats">
+                    <div class="timeHorizons">
+                        <span class="horizonName" id="defaultHorizon" onclick="openHorizon('dailySpend', this, '#2c70fe')">
+                            <p>Daily</p>
+                        </span>
+                        <span class="horizonName" onclick="openHorizon('weeklySpend', this, '#2c70fe')">
+                            <p>Weekly</p>
+                        </span>
+                        <span class="horizonName" onclick="openHorizon('monthlySpend', this, '#2c70fe')">
+                            <p>Monthly</p>
+                        </span>
+                        <span class="horizonName" onclick="openHorizon('yearlySpend', this, '#2c70fe')">
+                            <p>Yearly</p>
+                        </span>
+                    </div>
+
+                    <div id="dailySpend" class="horizonSpend">
+                        <div class="horizonSummary">
+                            <div class="totalSpendCard">
+                                <p>Card</p>
+                            </div>
+                            <div class="transactionPie">
+                                <p>Card</p>
+                            </div>
+                        </div>
+                        <div class="horizonChart" id="dailyChart">
+                            <div class="chartDisplay">
+                                <div class="chartInfo">
+
+                                </div>
+                                <p>Card</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="weeklySpend" class="horizonSpend">
+                        <div class="horizonSummary">
+                            <div class="totalSpendCard">
+
+                            </div>
+                            <div class="transactionPie">
+
+                            </div>
+                        </div>
+                        <div class="horizonChart" id="weeklyChart">
+
+                        </div>
+                    </div>
+
+                    <div id="monthlySpend" class="horizonSpend">
+                        <div class="horizonSummary">
+                            <div class="totalSpendCard">
+
+                            </div>
+                            <div class="transactionPie">
+
+                            </div>
+                        </div>
+                        <div class="horizonChart" id="monthlyChart">
+
+                        </div>
+                    </div>
+
+                    <div id="yearlySpend" class="horizonSpend">
+                        <div class="horizonSummary">
+                            <div class="totalSpendCard">
+
+                            </div>
+                            <div class="transactionPie">
+
+                            </div>
+                        </div>
+                        <div class="horizonChart" id="yearlyChart">
+
+                        </div>
+                    </div>
+                    <h2>
+                        Budget History
+                    </h2>
+                    <div class="activityBreakdown" id="budgetActivityBreakdown">
+                        <div class="breakDownCard">
+                            <div class="breakDownSymbol">
+                                <span class="material-symbols-rounded">
+                                    shopping_cart
+                                </span>
+                            </div>
+                            <p>Grocery</p>
+                            <h4>$ 120.75</h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Grocery</p>
+                            <h4></h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Grocery</p>
+                            <h4></h4>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="investmentSection" class="page">
+                <div class="currentInvestmentTotal">
+                    <p>Total Current Investment</p>
+                    <h5>$ <span>120,000.00</span></h5>
+                </div>
+                <div>
+                    <h2>
+                        Public Company
+                    </h2>
+                    <div class="publicInvestment">
+                        <form>
+                            <select name="sector" id="publicCompanyIndustry">
+                                <option value="Select an Industry">Select an Industry</option>
+                                <option value="Food & Beverage">Food & Beverage</option>
+                                <option value="Financial Services">Financial Services</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Pharmaceuticals">Pharmaceuticals</option>
+                                <option value="Hospitality">Hospitality</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Telecommunications">Telecommunications</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="text" placeholder="Ticker Symbol" id="tickerSymbol">
+                            <button class="addToBudget" id="publicCompanyLookup">Search</button>
+                        </form>
+                        <div class="tickerSymbolInfo">
+                            
+                        </div>
+                    </div>
+                    <h2>
+                        Private Company 
+                    </h2>
+                    <div class="privateInvestment">
+                        <form action="">
+                            <input type="text" placeholder="Company Name" id="privateCompanyName">
+                            <select name="sector" id="privateCompanyIndustry">
+                                <option value="Select an Industry">Select an Industry</option>
+                                <option value="Food & Beverage">Food & Beverage</option>
+                                <option value="Financial Services">Financial Services</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Technology">Technology</option>
+                                <option value="Agriculture">Agriculture</option>
+                                <option value="Pharmaceuticals">Pharmaceuticals</option>
+                                <option value="Hospitality">Hospitality</option>
+                                <option value="Retail">Retail</option>
+                                <option value="Telecommunications">Telecommunications</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <input type="number" placeholder="Investment value" id="privateInvestmentValue">
+                            <button class="addToInvestment" id="addPrivateInvestment">Add Investment</button>
+                        </form>
+                    </div> 
+                </div>
+                <h2>
+                    Current Investments
+                </h2>
+                <div class="currentInvestments">
+                    <div class="investmentSnapshot">
+                        <div class="horizonSummary">
+                        <div class="totalSpendCard">
+                            <p>Card</p>
+                        </div>
+                        <div class="transactionPie">
+                            <p>Card</p>
+                        </div>
+                    </div>
+
+                    </div>
+                    
+                    <div class="investmentBreakdown" id="investmentBreakdown">
+                        <div class="breakDownCard">
+                            <div class="breakDownSymbol">
+                                <span class="material-symbols-rounded">
+                                    payments
+                                </span>
+                            </div>
+                            <p>Company Name</p>
+                            <h4>$ 120.75</h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Company Name</p>
+                            <h4></h4>
+                        </div>
+
+                        <div class="breakDownCard">
+                            <span></span>
+                            <p>Company Name</p>
+                            <h4></h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div id="literacySection" class="page">
+                <h2>
+                    Financial Literacy
+                </h2>
+            </div>
+
+            <div id="modellingSection" class="page">
+                <h2>
+                    Financial Modelling
+                </h2>
+                <div class="modellingSelection">
+                    <form action="">
+                        <select name="modelSelector" id="modelSelector">
+                            <option value="Select a model">Select a model</option>
+                            <option value="3 Statement Model">3 Statement Model</option>
+                            <option value="Valuations and DCF">Valuations and DCF</option>
+                            <option value="Accretion/Dilution Model">Accretion/Dilution Model</option>
+                            <option value="LBO Model">LBO Model</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="multi-part-form" id="LBOForm">
+
+                    <div class="form-section">
+                        <div class="sectionHold">
+                            <h3>LBO Model</h3>
+                            <h6>Income Statement</h6>
+                            <label for="">Revenue</label>
+                            <input type="number" placeholder="Historical Revenue" id="Historical_Revenue">
+                            <input type="number" placeholder="Current Revenue" id="Current_Revenue">
+                            <label for="">Cost of Goods Sold</label>
+                            <input type="number" placeholder="Historical COGS" id="Historical_COGS">
+                            <input type="number" placeholder="Current COGS" id="Current_COGS">
+                            <label for="">Selling, General & Administrative Costs</label>
+                            <input type="number" placeholder="Historical SG&A" id="Historical_SG&A">
+                            <input type="number" placeholder="Current SG&A" id="Current_SG&A">
+                            <label for="">Depreciation</label>
+                            <input type="number" placeholder="Historical Depreciation" id="Historical_Depreciation">
+                            <input type="number" placeholder="Current Depreciation" id="Current_Depreciation">
+                            <label for="">Amortization</label>
+                            <input type="number" placeholder="Historical Amortization" id="Historical_Amortization">
+                            <input type="number" placeholder="Current Amortization" id="Current_Amortization">
+                            <label for="">Interest Expense</label>
+                            <input type="number" placeholder="Historical Interest Expense" id="Historical_Interest_Expense">
+                            <input type="number" placeholder="Current Interest Expense" id="Current_Interest_Expense">
+                            <div>
+                                <button class="next">Next</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Balance Sheet</h6>
+                            <label for="">Current Assets</label>
+                            <input type="number" placeholder="Cash Balance" id="Historical_Cash_Balance">
+                            <input type="number" placeholder="Accounts Receivable" id="LBO_Accounts_Receivable">
+                            <input type="number" placeholder="Inventory" id="LBO_Inventory">
+                            <input type="number" placeholder="Prepaid Expenses" id="LBO_Prepaid_Expenses">
+                            <label for="">PP&E, Net of Accum. Depreciation</label>
+                            <input type="number" placeholder="PP&E, Net of Accum. Depreciation" id="PP&E_Depreciation">
+                            <label for="">Other Assets</label>
+                            <input type="number" placeholder="Capitalized Financing Fee" id="Capitalized_Financing_Fee">
+                            <input type="number" placeholder="Goodwill" id="LBO_Goodwill">
+                            <input type="number" placeholder="Other Long Term Asset" id="LBO_Other_Long_Term_Asset">
+                            <label for="">Current Liabilities</label>
+                            <input type="number" placeholder="Accounts Payable" id="LBO_Accounts_Payable">
+                            <label for="">Long Term Liabilities</label>
+                            <input type="number" placeholder="Notes Payable" id="LBO_Notes_Payable">
+                            <input type="number" placeholder="Long Term Debt" id="LBO_Long_Term_Debt">
+                            <label for="">Shareholders' Equity</label>
+                            <input type="number" placeholder="Common Stock" id="LBO_Common_Stock">
+                            <input type="number" placeholder="Retained Earnings" id="LBO_Retained_Earnings">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h4>Supporting Schedules</h4>
+                            <h6>Revolving Line of Credit</h6>
+                            <label for="">Interest Paid</label>
+                            <input type="number" placeholder="Interest Paid" id="LBO_Interest_Paid_Revolving">
+
+                            <h6>Subordinated Debt (Mezzanine / Sub Debt)</h6>
+                            <label for="">Interest Paid</label>
+                            <input type="number" placeholder="Interest Paid" id="LBO_Interest_Paid_Subordinated">
+
+                            <h6>Senior Debt</h6>
+                            <label for="">Interest Paid</label>
+                            <input type="number" placeholder="Loan Period" id="LBO_Loan_Period_Senior">
+                            <input type="number" placeholder="Interest Paid" id="LBO_Interest_Paid_Senior">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>PP&E Schedule</h6>
+                            <label for="">Asset Depreciation</label>
+                            <input type="number" placeholder="Useful Life Duration" id="LBO_Asset_Useful_Life_Duration">
+                            <label for="">Capital Expenditure</label>
+                            <input type="number" placeholder="CapEx" id="LBO_CapEx">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Exit Analysis</h6>
+                            <label for="">Ownership Structure</label>
+                            <input type="number" placeholder="Subordinated Debt" id="LBO_Subordinated_Debt">
+                            <label for="">EBITDA Multiple</label>
+                            <input type="number" placeholder="EBITDA Multiple" id="LBO_EBITDA_Multiple">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Sources & Uses</h6>
+                            <label for="">Purchase Price / Enterprise Value</label>
+                            <input type="number" placeholder="Purchase Price" id="LBO_Purchase_Price">
+                            <label for="">EBITDA Multiples</label>
+                            <input type="number" placeholder="Subordinated Debt EBITDA Multiple" id="Subordinated_Debt_EBITDA_Multiple">
+                            <input type="number" placeholder="Senior Debt EBITDA Multiple" id="Senior_Debt_EBITDA_Multiple">
+                            <label for="">Transaction Expenses</label>
+                            <input type="number" placeholder="Transaction Expenses" id="LBO_Transaction_Expense">
+                            <input type="number" placeholder="Financing Fees" id="LBO_Financing_Fees">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="create-model" id="createLBOModel">Create Model</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="multi-part-form" id="three-statement-form">
+                    <div class="form-section">
+                        <div class="sectionHold">
+                            <h3>Three Statement</h3>
+                            <h6>Income Statement</h6>
+                            <label for="">Company</label>
+                            <input type="text" placeholder="Company Name" id="three_statement_company_name">
+                            <label for="">Currency</label>
+                            <select name="three_statement_currency" id="three_statement_currency">
+                                <option value="Select Currency">Select a currency</option>
+                                <option value="Dollar">Us Dollar</option>
+                                <option value="Rand">South African Rand</option>
+                                <option value="Langeni">Swati Langeni</option>
+                            </select>
+                            <label for="">Revenue</label>
+                            <input type="number" placeholder="Revenue" id="three_statement_revenue">
+                            <label for="">Cost of Goods Sold</label>
+                            <input type="number" placeholder="COGS" id="three_statement_COGS">
+                            <label for="">Marketing Expense</label>
+                            <input type="number" placeholder="Marketing" id="three_statement_marketing">
+                            <label for="">Selling, General & Administrative Costs</label>
+                            <input type="number" placeholder="SG&A" id="three_statement_SG&A">
+                            <label for="">Depreciation</label>
+                            <input type="number" placeholder="Depreciation" id="three_statement_depreciation">
+                            <label for="">Amortization</label>
+                            <input type="number" placeholder="Amortization" id="three_statement_amortization">
+                            <label for="">Interest Expense</label>
+                            <input type="number" placeholder="Interest Expense" id="three_statement_interest_expense">
+                            <div>
+                                <button class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Balance Sheet</h6>
+                            <label for="">Current Assets</label>
+                            <input type="number" placeholder="Cash Balance" id="three_statement_cash_balance">
+                            <input type="number" placeholder="Accounts Receivable" id="three_statement_accounts_receivable">
+                            <input type="number" placeholder="Inventory" id="three_statement_inventory">
+                            <input type="number" placeholder="Prepaid Expenses" id="three_statement_prepaid_expenses">
+                            <label for="">Other Assets</label>
+                            <input type="number" placeholder="Goodwill" id="three_statement_goodwill">
+                            <input type="number" placeholder="Other Long Term Asset" id="three_statement_other_long_term_assets">
+                            <label for="">Current Liabilities</label>
+                            <input type="number" placeholder="Accounts Payable" id="three_statement_accounts_payable">
+                            <input type="number" placeholder="Short-term loans payable" id="three_statement_short_term_loans">
+                            <input type="number" placeholder="Accrued Compensation and Benefits" id="three_statement_accrued_comp">
+                            <label for="">Long Term Liabilities</label>
+                            <input type="number" placeholder="Notes Payable" id="three_statement_notes_payable">
+                            <input type="number" placeholder="Long Term Debt" id="three_statement_long_term_debt">
+                            <label for="">Shareholders' Equity</label>
+                            <input type="number" placeholder="Common Stock" id="three_statement_common_stock">
+                            <input type="number" placeholder="Retained Earnings" id="three_statement_retained_earnings">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Cash Flow Statement</h6>
+                            <label for="">Cash flows from operating activities</label>
+                            <input type="number" placeholder="Net Income" id="cash_flow_net_income">
+                            <label for="">Adjustments to reconcile net income to cash generated by operating activities</label>
+                            <input type="number" placeholder="Depreciation & Armotization" id="three_statement_cash_flow_depreciation">
+                            <input type="number" placeholder="Deferred Income Tax Expense" id="three_statement_cash_flow_deferred_income_tax">
+                            <input type="number" placeholder="Other" id="three_statement_cash_flow_other_operating">
+                            <label for="">Changes in operating assets and liabilities:</label>
+                            <input type="number" placeholder="Accounts Receivable" id="three_statement_cash_flow_accounts_receivable">
+                            <input type="number" placeholder="Inventories" id="three_statement_cash_flow_inventories">
+                            <input type="number" placeholder="Other Current & Non Current Assets" id="three_statement_cash_flow_other_assets">
+                            <input type="number" placeholder="Accounts Payable" id="three_statement_cash_flow_accounts_payable">
+                            <input type="number" placeholder="Interest Paid on loans" id="three_statement_cash_flow_loan_interest">
+                            <input type="number" placeholder="Other Current & Non current liabilities" id="three_statement_cash_flow_other_liabilities">
+                            <label for="">Investing Activities</label>
+                            <input type="number" placeholder="Purchases of Marketable Securities" id="three_statement_cash_flow_marketable_securities">
+                            <input type="number" placeholder="Proceeds from Matrurities of Marketable Securities" id="three_statement_cash_flow_marketable_securities_maturities">
+                            <input type="number" placeholder="Proceeds from Sales of Marketable Securities" id="three_statement_cash_flow_marketable_securities_sales">
+                            <input type="number" placeholder="Acquisition of Property, Plant & Equipment" id="three_statement_cash_flow_aquisition_ppe">
+                            <input type="number" placeholder="Acquisition of Intangible Assets" id="three_statement_cash_flow_aquisition_intangible">
+                            <input type="number" placeholder="Proceeds from Sales of Property, Plant & Equipment" id="three_statement_cash_flow_sale_ppe">
+                            <input type="number" placeholder="Proceeds from Sales of Intangible Assets" id="three_statement_cash_flow_sale_intangible">
+                            <input type="number" placeholder="Other" id="three_statement_cash_flow_other_investing">
+
+                            <label for="">Financing Activities</label>
+                            <input type="number" placeholder="Dividends & Dividend Equivalent Rights Paid" id="three_statement_cash_flow_dividend">
+                            <input type="number" placeholder="Repurchase of Common Stock" id="three_statement_cash_flow_stock_repurchase">
+                            <input type="number" placeholder="Cash from loans" id="three_statement_cash_flow_stock_cash_from_loans">
+                            <input type="number" placeholder="Loan repayments (Principal)" id="three_statement_cash_flow_loan_principal">
+                            <input type="number" placeholder="Other" id="three_statement_cash_flow_other_financing">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="create-model" id="createThreeStatement">Create Model</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="multi-part-form" id="valuations-dcf-form">
+                    <div class="form-section">
+                        <div class="sectionHold">
+                            <h3>Valuation/DCF Model</h3>
+                            <label for="">Company</label>
+                            <input type="text" placeholder="Company Name" id="dcf_statement_company_name">
+                            <h6>Income Statement</h6>
+                            <label for="">Revenue</label>
+                            <input type="number" placeholder="Historical Revenue" id="Dcf_Historical_Revenue">
+                            <input type="number" placeholder="Current Revenue" id="Dcf_Current_Revenue">
+                            <label for="">Cost of Goods Sold</label>
+                            <input type="number" placeholder="Historical COGS" id="Dcf_Historical_COGS">
+                            <input type="number" placeholder="Current COGS" id="Dcf_Current_COGS">
+                            <label for="">Selling, General & Administrative Costs</label>
+                            <input type="number" placeholder="Historical SG&A" id="Dcf_Historical_SG&A">
+                            <input type="number" placeholder="Current SG&A" id="Dcf_Current_SG&A">
+                            <input type="number" placeholder="Historical Marketing Expense" id="Dcf_Historical_marketing">
+                            <input type="number" placeholder="Current Marketing Expense" id="Dcf_Current_marketing">
+                            <label for="">Depreciation</label>
+                            <input type="number" placeholder="Historical Depreciation" id="Dcf_Historical_Depreciation">
+                            <input type="number" placeholder="Current Depreciation" id="Dcf_Current_Depreciation">
+                            <label for="">Amortization</label>
+                            <input type="number" placeholder="Historical Amortization" id="Dcf_Historical_Amortization">
+                            <input type="number" placeholder="Current Amortization" id="Dcf_Current_Amortization">
+                            <label for="">Interest Expense</label>
+                            <input type="number" placeholder="Historical Interest Expense" id="Dcf_Historical_Interest_Expense">
+                            <input type="number" placeholder="Current Interest Expense" id="Dcf_Current_Interest_Expense">
+                            <div>
+                                <button class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Balance Sheet</h6>
+                            <label for="">Current Assets</label>
+                            <input type="number" placeholder="Cash Balance" id="Dcf_Cash_Balance">
+                            <input type="number" placeholder="Accounts Receivable" id="Dcf_Accounts_Receivable">
+                            <input type="number" placeholder="Inventory" id="Dcf_Inventory">
+                            <input type="number" placeholder="Prepaid Expenses" id="Dcf_Prepaid_Expenses">
+                            <label for="">Other Assets</label>
+                            <input type="number" placeholder="Goodwill" id="Dcf_goodwill">
+                            <input type="number" id="Dcf_historical_PPE" placeholder="Past Property, Plant and Equipment">
+                            <input type="number" id="Dcf_PPE" placeholder="Property, Plant and Equipment">
+                            <input type="number" placeholder="Other Long Term Asset" id="Dcf_long_term_assets">
+                            <label for="">Current Liabilities</label>
+                            <input type="number" placeholder="Accounts Payable" id="Dcf_accounts_payable">
+                            <input type="number" placeholder="Short-term loans payable" id="Dcf_short_term_loans">
+                            <input type="number" placeholder="Accrued Compensation and Benefits" id="Dcf_accrued_comp">
+                            <label for="">Long Term Liabilities</label>
+                            <input type="number" placeholder="Notes Payable" id="Dcf_Notes_Payable">
+                            <input type="number" placeholder="Long Term Debt" id="Dcf_Long_Term_Debt">
+                            <label for="">Shareholders' Equity</label>
+                            <input type="number" placeholder="Common Stock" id="Dcf_Common_Stock">
+                            <input type="number" placeholder="Retained Earnings" id="Dcf_Retained_Earnings">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Cash Flow Statement</h6>
+                            <label for="">Cash flows from operating activities</label>
+                            <input type="number" placeholder="Net Income" id="Dcf_cash_flow_net_income">
+                            <label for="">Adjustments to reconcile net income to cash generated by operating activities</label>
+                            <input type="number" placeholder="Depreciation & Armotization" id="Dcf_cash_flow_depreciation">
+                            <input type="number" placeholder="Deferred Income Tax Expense" id="Dcf_cash_flow_deferred_income_tax">
+                            <input type="number" placeholder="Other" id="Dcf_cash_flow_other_operating">
+                            <label for="">Changes in operating assets and liabilities:</label>
+                            <input type="number" placeholder="Accounts Receivable" id="Dcf_cash_flow_accounts_receivable">
+                            <input type="number" placeholder="Inventories" id="Dcf_cash_flow_inventories">
+                            <input type="number" placeholder="Other Current & Non Current Assets" id="Dcf_cash_flow_other_assets">
+                            <input type="number" placeholder="Accounts Payable" id="Dcf_cash_flow_accounts_payable">
+                            <input type="number" placeholder="Interest Paid on loans" id="Dcf_cash_flow_loan_interest">
+                            <label for="">Investing Activities</label>
+                            <input type="number" placeholder="Acquisition of Property, Plant & Equipment" id="Dcf_cash_flow_aquisition_ppe">
+                            <input type="number" placeholder="Acquisition of Intangible Assets" id="Dcf_cash_flow_aquisition_intangible">
+                            <input type="number" placeholder="Proceeds from Sales of Property, Plant & Equipment" id="Dcf_cash_flow_sale_ppe">
+                            <input type="number" placeholder="Proceeds from Sales of Intangible Assets" id="Dcf_cash_flow_sale_intangible">
+                            <input type="number" placeholder="Other" id="Dcf_cash_flow_other_investing">
+
+                            <label for="">Financing Activities</label>
+                            <input type="number" placeholder="Dividends & Dividend Equivalent Rights Paid" id="Dcf_cash_flow_dividend">
+                            <input type="number" placeholder="Repurchase of Common Stock" id="Dcf_cash_flow_stock_repurchase">
+                            <input type="number" placeholder="Cash from loans" id="Dcf_cash_flow_cash_from_loans">
+                            
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="next">Next</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section" style="display: none;">
+                        <div class="sectionHold">
+                            <h6>Forecasting Growth Rates</h6>
+                            <label for="">Cash flows from operating activities</label>
+                            <input type="number" placeholder="Net Income" id="Dcf_cash_flow_net_income">
+                            <label for="">Adjustments to reconcile net income to cash generated by operating activities</label>
+                            <input type="number" placeholder="Depreciation & Armotization" id="Dcf_cash_flow_depreciation">
+                            <input type="number" placeholder="Deferred Income Tax Expense" id="Dcf_cash_flow_deferred_income_tax">
+                            <div>
+                                <button type="button" class="prev">Previous</button>
+                                <button type="button" class="create-model" id="createDCFStatement">Create Model</button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="multi-part-form" id="accretion-model-form">
+                    <div class="form-section">
+                        <div class="sectionHold">
+                            <h3>Accretion Dilution Model</h3>
+                            <h6>Acquirer and Target Earnings</h6>
+                            <label for="">Net Income</label>
+                            <input type="number" placeholder="Acquirer Net Income" id="acquirer_net">
+                            <input type="number" placeholder="Target Net Income" id="target_net">
+                            <label for="">Number of Outstanding Shares</label>
+                            <input type="number" placeholder="Acquirer Shares" id="acquirer_shares">
+                            <input type="number" placeholder="Target Shares" id="target_shares">
+                            <label for="">Earnings Per Share</label>
+                            <input type="number" placeholder="Acquirer EPS" id="acquirer_EPS">
+                            <input type="number" placeholder="Target EPS" id="target_EPS">
+                            <label for="">Share Price</label>
+                            <input type="number" placeholder="Acquirer Share Price" id="acquirer_share_price">
+                            <input type="number" placeholder="Target Share Price" id="target_share_price">
+                            <label for="">Price to Earnings Ratio</label>
+                            <input type="number" placeholder="Acquirer P/E" id="acquirer_PE">
+                            <input type="number" placeholder="Target P/E" id="target_PE">
+                            <div>
+                                <button type="button" class="create-model" id="createAccretionStatement">Create Model</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="iconDiv">
+                <span class="material-symbols-rounded" id="budget" onclick="openPage('budgetSection', this, '#2c70fe')">
+                    savings
+                </span>
+                <p class="iconTxt">
+                    Budgeting
+                </p>
+            </div>
+            <div class="iconDiv">
+                <span class="material-symbols-rounded" id="investment" onclick="openPage('investmentSection', this, '#2c70fe')">
+                    monitoring
+                </span>
+                <p class="iconTxt">
+                    Investments
+                </p>
+            </div>
+            <div class="homeBtn">
+                <span class="material-symbols-rounded" id="defaultOpen" onclick="openPage('homeSection', this, '')">
+                    home
+                </span>
+                <p class="iconTxt">
+                    Home
+                </p>
+            </div>
+            <div class="iconDiv">
+                <span class="material-symbols-rounded" id="modelling" onclick="openPage('modellingSection', this, '#2c70fe')">
+                    query_stats
+                </span>
+                <p class="iconTxt">
+                    Modelling
+                </p>
+            </div>
+            <div class="iconDiv">
+                <span class="material-symbols-rounded" id="literacy" onclick="openPage('literacySection', this, '#2c70fe')">
+                    local_library
+                </span>
+                <p class="iconTxt">
+                    Literacy
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+    function openPage(pageName, elmnt, color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("page");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("material-symbols-rounded");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].style.color = "";
+        }
+        // Show the specific tab contents
+        document.getElementById(pageName).style.display = "block";
+        elmnt.style.color = color;
+    }
+    document.getElementById("defaultOpen").click();
+    function openHorizon(horizonName, element, color){
+        let i, horizonContent, horizonLinks;
+        horizonContent = document.getElementsByClassName("horizonSpend");
+        for(i = 0; i < horizonContent.length; i++){
+            horizonContent[i].style.display = "none"
+        }
+        horizonLinks = document.getElementsByClassName("horizonName");
+        for(i = 0; i < horizonLinks.length; i++){
+            horizonLinks[i].style.backgroundColor = ""
+        }
+        document.getElementById(horizonName).style.display = "block"
+        element.style.backgroundColor = color
+    }
+    document.getElementById("defaultHorizon").click();
+    </script>
+
+    <script>
+    var forms = document.querySelectorAll(".multi-part-form");
+
+    forms.forEach(function(form) {
+    var sections = form.querySelectorAll(".form-section");
+    var currentSectionIndex = 0;
+
+    sections[currentSectionIndex].style.display = "block";
+
+    form.querySelectorAll(".next").forEach(function(button, index) {
+        button.addEventListener("click", function() {
+            if (validateSection(sections[currentSectionIndex])) {
+                sections[currentSectionIndex].style.display = "none";
+                currentSectionIndex++;
+                sections[currentSectionIndex].style.display = "block";
+            }
+        });
+    });
+
+    form.querySelectorAll(".prev").forEach(function(button, index) {
+        button.addEventListener("click", function() {
+            sections[currentSectionIndex].style.display = "none";
+            currentSectionIndex--;
+            sections[currentSectionIndex].style.display = "block";
+        });
+    });
+
+    function validateSection(section) {
+        var inputs = section.querySelectorAll("input");
+        var isValid = true;
+
+        inputs.forEach(function(input) {
+            if (!input.checkValidity()) {
+                isValid = false;
+            }
+        });
+        return isValid;
+    }
+});
+</script>
+
+<script>
+    const selectBox = document.getElementById("modelSelector")
+    const LBOForm = document.getElementById("LBOForm")
+    const three_statement_form = document.getElementById("three-statement-form")
+    const valuations_dcf_form = document.getElementById("valuations-dcf-form")
+    const accretion_model_form = document.getElementById("accretion-model-form")
+
+    selectBox.addEventListener("change", ()=>{
+        const selectedModel = selectBox.options[selectBox.selectedIndex].value;
+        //console.log(selectedModel)
+        if(selectedModel === "LBO Model") {
+            LBOForm.style.display = "block";
+            three_statement_form.style.display = "none";
+            valuations_dcf_form.style.display = "none";
+            accretion_model_form.style.display = "none";
+        }else if(selectedModel === "3 Statement Model") {
+            LBOForm.style.display = "none";
+            three_statement_form.style.display = "block";
+            valuations_dcf_form.style.display = "none";
+            accretion_model_form.style.display = "none";
+        }else if(selectedModel === "Valuations and DCF") {
+            LBOForm.style.display = "none";
+            three_statement_form.style.display = "none";
+            valuations_dcf_form.style.display = "block";
+            accretion_model_form.style.display = "none";
+        }else if(selectedModel === "Accretion/Dilution Model") {
+            LBOForm.style.display = "none";
+            three_statement_form.style.display = "none";
+            valuations_dcf_form.style.display = "none";
+            accretion_model_form.style.display = "block";
+        }else if(selectedModel === "Select a model") {
+            LBOForm.style.display = "none";
+            three_statement_form.style.display = "none";
+            valuations_dcf_form.style.display = "none";
+            accretion_model_form.style.display = "none";
+        }   
+    })
+</script>
+</body>
+</html>
