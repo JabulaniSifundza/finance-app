@@ -16,5 +16,13 @@
     "xlsx": "^0.18.5",
     "xlsx-js-style": "^1.2.0",
     "yahoo-finance": "^0.3.8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JabulaniSifundza/finance-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JabulaniSifundza/finance-app/issues"
+  },
+  "homepage": "https://github.com/JabulaniSifundza/finance-app#readme"
 }
