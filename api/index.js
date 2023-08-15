@@ -3,14 +3,14 @@ const bodyParser = require('body-parser');
 const Finance = require('financejs');
 const yahooFinance = require('yahoo-finance2');
 const admin = require("firebase-admin");
-const serviceAccount = require("./serviceAccount.json");
+//const serviceAccount = require("./serviceAccount.json");
 
 //! To do
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "placeholder",
-    storageBucket: "placeholder"
-})
+//admin.initializeApp({
+    //credential: admin.credential.cert(serviceAccount),
+    //databaseURL: "placeholder",
+    //storageBucket: "placeholder"
+//})
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,6 +52,7 @@ app.post('/api/investment', async(req, res)=>{
     try{
         const queryModules = ['price', 'financialData', 'summaryDetail']
         const financial_data = await yahooFinance.quoteSummary(ticker, queryModules)
+        res.status(200).json(financial_data)
     }
     catch(error){
         res.status(500).json({"error": error})
