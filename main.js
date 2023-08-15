@@ -508,7 +508,7 @@ async function getPublicCompany(){
         })
     })
     const data = await companyInfo.json()
-    const sharePrice = formatCurrency(data.summaryDetail.previousClose)
+    const sharePrice = formatCurrency(data.financialData.currentPrice)
     const high = formatCurrency(data.summaryDetail.dayHigh)
     publicSharePrice += sharePrice
     const html = `

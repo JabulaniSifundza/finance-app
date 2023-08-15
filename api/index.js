@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Finance = require('financejs');
-const yahooFinance = require('yahoo-finance');
+const yahooFinance = require('yahoo-finance2');
 const admin = require("firebase-admin");
 const serviceAccount = require("./serviceAccount.json");
 
@@ -50,14 +50,8 @@ app.post('/api/createbudgetEntry', async(req, res)=>{
 app.post('/api/investment', async(req, res)=>{
     const {ticker} = req.body
     try{
-        yahooFinance.quote({
-            symbol: ticker,
-            modules: ['financialData', 'summaryDetail']
-        }).then(data =>{
-            res.status(200).json(data)
-        }).catch(err =>{
-            res.status(500).json(err)
-        })
+        const queryModules = ['price', 'financialData', 'summaryDetail']
+        const financial_data = await yahooFinance.quoteSummary(ticker, queryModules)
     }
     catch(error){
         res.status(500).json({"error": error})
